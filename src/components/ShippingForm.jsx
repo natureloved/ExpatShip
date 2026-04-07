@@ -37,7 +37,7 @@ export default function ShippingForm() {
     if (originMatchDestError) return;
     
     // Generate mock tracking
-    const id = `ES-GLOBAL-${Math.floor(1000 + Math.random() * 9000)}`;
+    const id = `ES-INTL-${Math.floor(1000 + Math.random() * 9000)}`;
     setTrackingId(id);
     setIsSubmitted(true);
   };
@@ -119,7 +119,7 @@ export default function ShippingForm() {
                <AlertOctagon className="w-5 h-5 flex-shrink-0 mt-0.5" />
                <div>
                  <p className="font-bold">Validation Error: Invalid Domestic Route</p>
-                 <p className="text-sm mt-1">TransMeridian focuses exclusively on global cross-border logistics. Origin and destination cannot be the same.</p>
+                 <p className="text-sm mt-1">TransMeridian focuses exclusively on international cross-border logistics. Origin and destination cannot be the same.</p>
                </div>
              </div>
           )}
@@ -145,7 +145,7 @@ export default function ShippingForm() {
         )}
       </div>
 
-      {/* Global Rate Engine UI */}
+      {/* International Rate Engine UI */}
       {!originMatchDestError && rateEstimate && formData.itemValue && (
         <div className="bg-navy-950 text-white p-6 md:p-8 border-t-4 border-blue-500 relative overflow-hidden">
           {/* subtle background globe decoration */}
@@ -161,7 +161,7 @@ export default function ShippingForm() {
             <div className="w-full md:w-auto flex-1 space-y-4">
               <div className="flex items-center gap-3">
                 <Calculator className="w-6 h-6 text-blue-400" />
-                <h3 className="text-xl font-bold tracking-wide">Global Rate Engine Output</h3>
+                <h3 className="text-xl font-bold tracking-wide">International Rate Engine Output</h3>
               </div>
               
               <div className="grid grid-cols-2 gap-4 text-sm text-navy-200 max-w-sm drop-shadow">

@@ -17,7 +17,7 @@ export default function Dashboard({ setCurrentView }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-           <h2 className="text-2xl font-bold text-navy-900">Global Operations Center</h2>
+           <h2 className="text-2xl font-bold text-navy-900">Operations Center</h2>
            <p className="text-slate-500">Welcome back. Here is your cross-border activity for the week.</p>
         </div>
         <button 

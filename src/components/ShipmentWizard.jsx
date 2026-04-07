@@ -39,7 +39,7 @@ export default function ShipmentWizard() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const id = `ES-GLOBAL-${Math.floor(1000 + Math.random() * 9000)}`;
+    const id = `ES-INTL-${Math.floor(1000 + Math.random() * 9000)}`;
     setTrackingId(id);
     setIsSubmitted(true);
   };
@@ -128,7 +128,7 @@ export default function ShipmentWizard() {
                    <AlertOctagon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                    <div>
                      <p className="font-bold">Validation Error: Invalid Domestic Route</p>
-                     <p className="text-sm mt-1">TransMeridian focuses exclusively on global cross-border logistics. Origin and Destination cannot match.</p>
+                     <p className="text-sm mt-1">TransMeridian focuses exclusively on international cross-border logistics. Origin and Destination cannot match.</p>
                    </div>
                  </div>
               )}

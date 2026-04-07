@@ -72,7 +72,7 @@ export default function RouteMap({ originCode, destCode }) {
         }
       `}</style>
       <div className="absolute bottom-4 left-4 text-xs font-medium bg-navy-900/80 text-navy-300 px-3 py-1.5 rounded-full border border-navy-700 backdrop-blur-sm">
-        Global Tracking Topology Active
+        International Tracking Topology Active
       </div>
     </div>
   );

@@ -4,9 +4,9 @@ import TrackingMock from './TrackingMock';
 import { ZONES } from '../utils/rateEngine';
 
 const RECENT_SHIPMENTS = [
-  { id: 'ES-GLOBAL-4921', origin: 'US', dest: 'FR', date: '2026-04-05', status: 'IN TRANSIT' },
-  { id: 'ES-GLOBAL-1033', origin: 'GB', dest: 'AE', date: '2026-04-06', status: 'IN TRANSIT' },
-  { id: 'ES-GLOBAL-8842', origin: 'JP', dest: 'CA', date: '2026-04-07', status: 'DELIVERED' }
+  { id: 'ES-INTL-4921', origin: 'US', dest: 'FR', date: '2026-04-05', status: 'IN TRANSIT' },
+  { id: 'ES-INTL-1033', origin: 'GB', dest: 'AE', date: '2026-04-06', status: 'IN TRANSIT' },
+  { id: 'ES-INTL-8842', origin: 'JP', dest: 'CA', date: '2026-04-07', status: 'DELIVERED' }
 ];
 
 export default function TrackingDirectory() {
@@ -43,7 +43,7 @@ export default function TrackingDirectory() {
            <Search className="absolute left-3 top-2.5 w-5 h-5 text-slate-400" />
            <input 
              type="text" 
-             placeholder="Search by ID (e.g., ES-GLOBAL-...)" 
+             placeholder="Search by ID (e.g., ES-INTL-...)" 
              value={search}
              onChange={e => setSearch(e.target.value)}
              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-navy-500 transition-shadow"
