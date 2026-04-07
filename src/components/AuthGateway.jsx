@@ -119,7 +119,13 @@ export default function AuthGateway({ onLogin }) {
                    {isSignUp ? 'Create Password' : 'Password'}
                  </label>
                  {!isSignUp && (
-                   <a href="#" className="text-xs font-semibold text-blue-600 hover:text-blue-800">Forgot Password?</a>
+                   <button 
+                     type="button" 
+                     onClick={(e) => { e.preventDefault(); setResetSent(true); setTimeout(() => setResetSent(false), 5000); }}
+                     className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                   >
+                     Forgot Password?
+                   </button>
                  )}
                </div>
                <div className="relative">
