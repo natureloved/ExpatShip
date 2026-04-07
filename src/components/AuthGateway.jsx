@@ -8,6 +8,7 @@ export default function AuthGateway({ onLogin }) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [authMethod, setAuthMethod] = useState('');
+  const [resetSent, setResetSent] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,6 +74,12 @@ export default function AuthGateway({ onLogin }) {
              {isSignUp ? 'Join us to streamline your shipping operations.' : 'Enter your credentials to access the Operations Center.'}
            </p>
 
+           {resetSent && (
+             <div className="bg-green-50 text-green-700 text-sm font-medium p-3 rounded-lg border border-green-200 mb-4 animate-in fade-in slide-in-from-top-2">
+               If an account exists, a password reset link has been dispatched to your email.
+             </div>
+           )}
+
            <form onSubmit={handleSubmit} className="space-y-5">
              {isSignUp && (
                <div>
@@ -136,7 +143,7 @@ export default function AuthGateway({ onLogin }) {
                {isLoading && authMethod === 'email' ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                ) : (
-                  <>{isSignUp ? 'Create Account' : 'Sign In Securely'} <ArrowRight className="w-4 h-4 ml-1"/></>
+                  <>{isSignUp ? 'Create Account' : 'Sign In'} <ArrowRight className="w-4 h-4 ml-1"/></>
                )}
              </button>
            </form>

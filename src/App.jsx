@@ -12,6 +12,7 @@ function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const navItemClass = (isActive) => `w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors border ${isActive ? 'bg-navy-800/80 text-white border-navy-700' : 'text-navy-300 border-transparent hover:bg-navy-800/30'}`;
 
@@ -131,7 +132,7 @@ function App() {
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                    <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
                       <span className="font-bold text-navy-900">Notifications</span>
-                      <button className="text-xs text-blue-600 font-semibold hover:underline">Mark all read</button>
+                      <button className="text-xs text-blue-600 font-semibold hover:underline">Mark all as read</button>
                    </div>
                    <div className="max-h-64 overflow-y-auto">
                       <div className="p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors flex gap-3 cursor-pointer">
@@ -159,13 +160,44 @@ function App() {
               )}
             </div>
 
-            <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
+            <div className="flex items-center gap-4 border-l border-slate-200 pl-6 relative">
               <span className="text-sm font-medium text-slate-500 hidden md:block">
                  {currentUser || 'Platform Demo'}
               </span>
-              <div className="w-8 h-8 rounded-full bg-navy-900 flex items-center justify-center text-white font-bold shadow-md">
+              <button 
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="w-8 h-8 rounded-full bg-navy-900 flex items-center justify-center text-white font-bold shadow-md hover:ring-2 hover:ring-offset-2 hover:ring-navy-500 transition-all cursor-pointer"
+              >
                 {currentUser ? currentUser.substring(0,2).toUpperCase() : 'ES'}
-              </div>
+              </button>
+
+              {/* Profile Dropdown */}
+              {showProfileMenu && (
+                <div className="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="p-4 border-b border-slate-100 bg-slate-50">
+                    <label className="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Edit Profile Name</label>
+                    <input 
+                       type="text" 
+                       value={currentUser} 
+                       onChange={(e) => { 
+                         setCurrentUser(e.target.value); 
+                         localStorage.setItem('user', e.target.value); 
+                       }}
+                       className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-bold text-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-400 transition-shadow"
+                       placeholder="Enter full name"
+                    />
+                    <p className="text-xs text-slate-500 mt-2 font-medium">User Profile</p>
+                  </div>
+                  <div className="p-2">
+                     <button 
+                       onClick={() => { setShowProfileMenu(false); handleLogout(); }} 
+                       className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg font-bold transition-colors flex items-center gap-2"
+                     >
+                        <LogOut className="w-4 h-4" /> Sign Out
+                     </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </header>
