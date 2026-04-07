@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
 import { Globe, Mail, Lock, User, ArrowRight } from 'lucide-react';
 
 export default function AuthGateway({ onLogin }) {
@@ -10,24 +11,39 @@ export default function AuthGateway({ onLogin }) {
   const [authMethod, setAuthMethod] = useState('');
   const [resetSent, setResetSent] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) return;
     if (isSignUp && !name) return;
     
     setAuthMethod('email');
     setIsLoading(true);
-    setTimeout(() => {
-      onLogin(isSignUp ? name : email);
-    }, 1500);
+    
+    try {
+       if (isSignUp) {
+          const { error } = await supabase.auth.signUp({
+             email,
+             password,
+             options: { data: { full_name: name } }
+          });
+          if (error) alert(error.message);
+       } else {
+          const { error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) alert(error.message);
+       }
+    } finally {
+       setIsLoading(false);
+    }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     setAuthMethod('google');
     setIsLoading(true);
-    setTimeout(() => {
-      onLogin('Google User');
-    }, 1200);
+    try {
+       await supabase.auth.signInWithOAuth({ provider: 'google' });
+    } finally {
+       setIsLoading(false);
+    }
   };
 
   return (

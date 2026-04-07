@@ -1,18 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShipmentWizard from './components/ShipmentWizard';
 import Dashboard from './components/Dashboard';
 import TrackingDirectory from './components/TrackingDirectory';
 import AuthGateway from './components/AuthGateway';
 import Settings from './components/Settings';
+import { supabase } from './lib/supabase';
 import { Globe, Plane, Package, LayoutDashboard, Menu, X, LogOut, Settings as SettingsIcon, Bell, Info } from 'lucide-react';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('auth') === 'true');
-  const [currentUser, setCurrentUser] = useState(() => localStorage.getItem('user') || '');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState('');
   const [currentView, setCurrentView] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsAuthenticated(true);
+        setCurrentUser(session.user.user_metadata?.full_name || session.user.email);
+      }
+      setAuthLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setIsAuthenticated(true);
+        setCurrentUser(session.user.user_metadata?.full_name || session.user.email);
+      } else {
+        setIsAuthenticated(false);
+        setCurrentUser('');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const navItemClass = (isActive) => `w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors border ${isActive ? 'bg-navy-800/80 text-white border-navy-700' : 'text-navy-300 border-transparent hover:bg-navy-800/30'}`;
 
@@ -21,22 +45,21 @@ function App() {
     setMobileMenuOpen(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('user');
-    setIsAuthenticated(false);
-    setCurrentUser('');
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
   };
 
-  const handleLogin = (user) => {
-    localStorage.setItem('auth', 'true');
-    localStorage.setItem('user', user);
-    setIsAuthenticated(true);
-    setCurrentUser(user);
-  };
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-navy-950 flex flex-col justify-center items-center">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-navy-300 mt-4 tracking-widest uppercase text-sm font-bold">Initializing Encrypted Session...</p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
-    return <AuthGateway onLogin={handleLogin} />;
+    return <AuthGateway />;
   }
 
   return (
