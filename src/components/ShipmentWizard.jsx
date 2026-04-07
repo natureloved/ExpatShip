@@ -103,7 +103,7 @@ export default function ShipmentWizard() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                   <h2 className="text-xl font-bold text-navy-900">Define Logistics Route</h2>
+                   <h2 className="text-xl font-bold text-navy-900">Map Your Route</h2>
                    <p className="text-sm text-slate-500">Pick the cross-border origin and destination.</p>
                 </div>
               </div>

@@ -98,7 +98,7 @@ function App() {
         <header className="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10">
           <h1 className="text-lg font-bold text-navy-900 flex items-center gap-2">
             {currentView === 'dashboard' && 'Operations Overview'}
-            {currentView === 'new-shipment' && 'Shipment Procure Wizard'}
+            {currentView === 'new-shipment' && 'New Dispatch'}
             {currentView === 'tracking' && 'Tracking Log'}
           </h1>
           <div className="flex items-center gap-4">

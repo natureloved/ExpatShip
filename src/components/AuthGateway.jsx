@@ -49,7 +49,7 @@ export default function AuthGateway({ onLogin }) {
               <Globe className="w-10 h-10 text-blue-400" />
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-4 leading-tight">
-               Ship Everywhere.<br />Scale Infinitely.
+               Ship Anywhere through ExpatShip.<br />Scale Infinitely.
             </h1>
             <p className="text-navy-300 text-lg leading-relaxed">
                The premier intelligence engine for cross-border logistics. Automate your customs protocols, instantly calculate international duty rates, and trace assets in real-time.
@@ -108,7 +108,9 @@ export default function AuthGateway({ onLogin }) {
 
              <div>
                <div className="flex justify-between items-center mb-1">
-                 <label className="block text-sm font-medium text-slate-700">Security Password</label>
+                 <label className="block text-sm font-medium text-slate-700">
+                   {isSignUp ? 'Create Password' : 'Password'}
+                 </label>
                  {!isSignUp && (
                    <a href="#" className="text-xs font-semibold text-blue-600 hover:text-blue-800">Forgot Password?</a>
                  )}
@@ -134,7 +136,7 @@ export default function AuthGateway({ onLogin }) {
                {isLoading && authMethod === 'email' ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                ) : (
-                  <>{isSignUp ? 'Open Account' : 'Sign In Securely'} <ArrowRight className="w-4 h-4 ml-1"/></>
+                  <>{isSignUp ? 'Create Account' : 'Sign In Securely'} <ArrowRight className="w-4 h-4 ml-1"/></>
                )}
              </button>
            </form>
