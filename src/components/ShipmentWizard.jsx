@@ -3,6 +3,7 @@ import { RefreshCcw, MapPin, Calculator, Send, AlertOctagon, ArrowRight, ArrowLe
 import BorderCheckForm from './BorderCheckForm';
 import TrackingMock from './TrackingMock';
 import RouteMap from './RouteMap';
+import CommercialInvoice from './CommercialInvoice';
 import { ZONES, calculateRate, convertFromUSD, formatCurrency } from '../utils/rateEngine';
 
 export default function ShipmentWizard() {
@@ -61,16 +62,34 @@ export default function ShipmentWizard() {
           origin={ZONES[formData.origin]?.name} 
           dest={ZONES[formData.destination]?.name} 
         />
-        <button 
-          onClick={() => { 
-            setIsSubmitted(false); 
-            setStep(1); 
-            setFormData({origin: '', destination: '', weight: '1', itemValue: '', hsCode: '', exportReason: '', taxId: ''}); 
-          }}
-          className="text-navy-600 hover:text-navy-900 font-medium underline mt-4 block"
-        >
-          Create Another Shipment
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+           <button 
+             onClick={() => window.print()}
+             className="flex-1 bg-white hover:bg-slate-50 text-slate-800 font-bold py-3 px-6 rounded-lg shadow-sm border border-slate-300 transition-colors flex items-center justify-center gap-2 print:hidden"
+           >
+             Download Commercial Invoice
+           </button>
+           <button 
+             onClick={() => { 
+               setIsSubmitted(false); 
+               setStep(1); 
+               setFormData({origin: '', destination: '', weight: '1', itemValue: '', hsCode: '', exportReason: '', taxId: ''}); 
+             }}
+             className="flex-1 bg-navy-600 hover:bg-navy-700 text-white font-bold py-3 px-6 rounded-lg shadow-sm transition-colors print:hidden"
+           >
+             Create New Transport
+           </button>
+        </div>
+
+        {/* Hidden Global Print Registry Container */}
+        <div className="hidden print:block absolute top-0 left-0 w-full min-h-screen bg-white z-[9999] m-0 p-0">
+           <CommercialInvoice 
+             trackingId={trackingId} 
+             origin={ZONES[formData.origin]?.name} 
+             dest={ZONES[formData.destination]?.name} 
+             formData={formData} 
+           />
+        </div>
       </div>
     );
   }
