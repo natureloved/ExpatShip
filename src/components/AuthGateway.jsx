@@ -71,7 +71,7 @@ export default function AuthGateway({ onLogin }) {
              {isSignUp ? 'Create an Account' : 'Welcome Back'}
            </h2>
            <p className="text-slate-500 mb-8 text-center md:text-left">
-             {isSignUp ? 'Join us to streamline your shipping operations.' : 'Enter your credentials to access the Operations Center.'}
+             {isSignUp ? 'Join us to streamline your shipping operations.' : 'Enter your credentials to access your dashboard.'}
            </p>
 
            {resetSent && (
