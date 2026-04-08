@@ -42,7 +42,7 @@ export default function DashboardPortal({ currentUser, handleLogout }) {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-        <nav className={`flex-1 px-4 py-6 flex-col space-y-2 ${mobileMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+        <nav className={`flex-1 px-4 py-6 flex-col space-y-2 transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'flex opacity-100 max-h-[500px]' : 'hidden md:flex opacity-0 md:opacity-100 max-h-0 md:max-h-none'} md:flex`}>
           <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className={navItemClass('/dashboard')}>
             <LayoutDashboard className={`w-5 h-5 ${currentPath === '/dashboard' ? 'text-blue-400' : ''}`} />
             Analytics Dashboard

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { Globe, Plane, Package, Ship, Menu } from 'lucide-react';
+import { Globe, Plane, Package, Ship, Menu, X } from 'lucide-react';
 
 export default function PublicLayout() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col selection:bg-blue-200">
       <header className="bg-navy-950 text-white z-50 shadow-xl border-b border-navy-800 sticky top-0">
@@ -24,8 +26,29 @@ export default function PublicLayout() {
              <Link to="/dashboard" className="hidden md:flex text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-lg shadow-lg hover:shadow-blue-500/25 transition-all">
                 Client Portal
              </Link>
-             <button className="md:hidden text-white"><Menu className="w-6 h-6" /></button>
+             <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden text-white p-2 hover:bg-navy-800 rounded-lg transition-colors"
+             >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+             </button>
           </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-screen border-t border-navy-800' : 'max-h-0'}`}>
+           <div className="flex flex-col p-6 space-y-4 bg-navy-950">
+              <Link to="/services" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">Services</Link>
+              <Link to="/countries" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">Destinations</Link>
+              <Link to="/customs-guide" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">Customs Guide</Link>
+              <Link to="/faq" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">FAQ</Link>
+              <Link to="/blog" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">Resources</Link>
+              <div className="pt-4 border-t border-navy-800">
+                 <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center justify-center bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg">
+                    Client Portal
+                 </Link>
+              </div>
+           </div>
         </div>
       </header>
 
