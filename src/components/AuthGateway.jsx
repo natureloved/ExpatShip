@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Globe, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Globe, Mail, Lock, User, ArrowRight, X, Check } from 'lucide-react';
 
 export default function AuthGateway({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -9,10 +9,15 @@ export default function AuthGateway({ onLogin }) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [authMethod, setAuthMethod] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [resetSent, setResetSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    
     if (!email || !password) return;
     if (isSignUp && !name) return;
     
@@ -21,26 +26,42 @@ export default function AuthGateway({ onLogin }) {
     
     try {
        if (isSignUp) {
-          const { error } = await supabase.auth.signUp({
+          const { data, error } = await supabase.auth.signUp({
              email,
              password,
              options: { data: { full_name: name } }
           });
-          if (error) alert(error.message);
+          
+          if (error) {
+             setErrorMsg(error.message);
+          } else if (data.user && data.session === null) {
+             setSuccessMsg('Verification email dispatched! Please confirm your identity to activate your ExpatShip profile.');
+          }
        } else {
           const { error } = await supabase.auth.signInWithPassword({ email, password });
-          if (error) alert(error.message);
+          if (error) setErrorMsg(error.message);
        }
+    } catch (err) {
+       setErrorMsg('A connection error occurred. Verify your network or Supabase status.');
     } finally {
        setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setErrorMsg('');
     setAuthMethod('google');
     setIsLoading(true);
     try {
-       await supabase.auth.signInWithOAuth({ provider: 'google' });
+       const { error } = await supabase.auth.signInWithOAuth({ 
+          provider: 'google',
+          options: {
+             redirectTo: window.location.origin + '/dashboard'
+          }
+       });
+       if (error) setErrorMsg(error.message);
+    } catch (err) {
+       setErrorMsg('OAuth initialization failed. Check your Supabase provider settings.');
     } finally {
        setIsLoading(false);
     }
@@ -90,8 +111,25 @@ export default function AuthGateway({ onLogin }) {
              {isSignUp ? 'Join us to streamline your shipping operations.' : 'Enter your credentials to access your dashboard.'}
            </p>
 
-           {resetSent && (
-             <div className="bg-green-50 text-green-700 text-sm font-medium p-3 rounded-lg border border-green-200 mb-4 animate-in fade-in slide-in-from-top-2">
+           {errorMsg && (
+             <div className="bg-red-50 text-red-700 text-sm font-bold p-4 rounded-xl border border-red-100 mb-6 flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                <div className="bg-red-100 p-1 rounded-full"><X className="w-3 h-3" /></div>
+                {errorMsg}
+             </div>
+           )}
+
+           {successMsg && (
+             <div className="bg-blue-50 text-blue-800 text-sm font-bold p-5 rounded-2xl border border-blue-100 mb-6 flex flex-col gap-3 animate-in fade-in slide-in-from-top-4">
+                <div className="flex items-center gap-2">
+                   <div className="bg-blue-600 p-1 rounded-full"><Check className="w-3 h-3 text-white" /></div>
+                   Protocol Initiated
+                </div>
+                <p className="font-medium text-blue-600 leading-relaxed">{successMsg}</p>
+             </div>
+           )}
+
+           {resetSent && !successMsg && (
+             <div className="bg-slate-50 text-slate-700 text-sm font-medium p-4 rounded-xl border border-slate-200 mb-6 animate-in fade-in slide-in-from-top-2">
                If an account exists, a password reset link has been dispatched to your email.
              </div>
            )}
