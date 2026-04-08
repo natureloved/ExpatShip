@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import AuthGateway from './components/AuthGateway';
 import DashboardPortal from './components/DashboardPortal';
 import { supabase } from './lib/supabase';
@@ -17,6 +17,9 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
   const [authLoading, setAuthLoading] = useState(true);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Check session on mount
@@ -45,6 +48,15 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Auto-redirect logic for authenticated users landing on public/login pages
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      if (location.pathname === '/login' || location.pathname === '/') {
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, authLoading, location.pathname, navigate]);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
@@ -61,7 +73,7 @@ function App() {
   return (
     <Routes>
        {/* Public Marketing Layer */}
-       <Route element={<PublicLayout />}>
+       <Route element={<PublicLayout isAuthenticated={isAuthenticated} />}>
           <Route path="/" element={<Landing />} />
           <Route path="/services" element={<Services />} />
           <Route path="/countries" element={<Countries />} />

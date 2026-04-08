@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Globe, Plane, Package, Ship, Menu, X } from 'lucide-react';
 
-export default function PublicLayout() {
+export default function PublicLayout({ isAuthenticated }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ export default function PublicLayout() {
           </nav>
           <div className="flex items-center gap-4">
              <Link to="/dashboard" className="hidden md:flex text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-lg shadow-lg hover:shadow-blue-500/25 transition-all">
-                Client Portal
+                {isAuthenticated ? 'Operations Dashboard' : 'Client Portal'}
              </Link>
              <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -45,7 +45,7 @@ export default function PublicLayout() {
               <Link to="/blog" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-navy-200 hover:text-white transition-colors">Resources</Link>
               <div className="pt-4 border-t border-navy-800">
                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center justify-center bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg">
-                    Client Portal
+                    {isAuthenticated ? 'Go to Dashboard' : 'Client Portal'}
                  </Link>
               </div>
            </div>
