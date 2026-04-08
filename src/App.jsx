@@ -19,14 +19,19 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Check session on mount
+    const initAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         setIsAuthenticated(true);
         setCurrentUser(session.user.user_metadata?.full_name || session.user.email);
       }
       setAuthLoading(false);
-    });
+    };
 
+    initAuth();
+
+    // Listen for auth events (Sign In, Google OAuth, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         setIsAuthenticated(true);
